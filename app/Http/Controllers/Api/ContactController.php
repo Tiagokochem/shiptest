@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreContactRequest;
 use App\Services\ContactServiceInterface;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
 class ContactController extends Controller
@@ -18,7 +18,6 @@ class ContactController extends Controller
 
     /**
      * GET /api/contacts
-     * Retorna a lista de todos os contatos.
      */
     public function index(): JsonResponse
     {
@@ -28,18 +27,16 @@ class ContactController extends Controller
 
     /**
      * POST /api/contacts
-     * Cria um novo contato.
      */
-    public function store(Request $request): JsonResponse
+    public function store(StoreContactRequest $request): JsonResponse
     {
-        // Aqui você poderia validar $request->validate([...])
-        $contact = $this->service->create($request->all());
+        // $request->validated() já retorna apenas os campos validados
+        $contact = $this->service->create($request->validated());
         return response()->json($contact, 201);
     }
 
     /**
      * GET /api/contacts/{id}
-     * Retorna um contato específico.
      */
     public function show(int $id): JsonResponse
     {
@@ -49,18 +46,15 @@ class ContactController extends Controller
 
     /**
      * PUT/PATCH /api/contacts/{id}
-     * Atualiza um contato existente.
      */
-    public function update(Request $request, int $id): JsonResponse
+    public function update(StoreContactRequest $request, int $id): JsonResponse
     {
-        // $request->validate([...]);
-        $updated = $this->service->update($id, $request->all());
+        $updated = $this->service->update($id, $request->validated());
         return response()->json($updated);
     }
 
     /**
      * DELETE /api/contacts/{id}
-     * Exclui um contato.
      */
     public function destroy(int $id): JsonResponse
     {
