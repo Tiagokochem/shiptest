@@ -13,3 +13,4 @@ use App\Http\Controllers\Api\ContactController;
 */
 
 Route::apiResource('contacts', ContactController::class);
+Route::post('contacts/export', [ContactController::class, 'exportCsv']);

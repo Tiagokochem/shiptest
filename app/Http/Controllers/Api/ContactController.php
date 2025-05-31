@@ -61,4 +61,74 @@ class ContactController extends Controller
         $this->service->delete($id);
         return response()->json(null, 204);
     }
+
+      /**
+     * POST /api/contacts/export
+     * Recebe um array de IDs e retorna um CSV com esses contatos.
+     */
+    public function exportCsv(Request $request)
+    {
+        // Validar que 'ids' seja um array de inteiros
+        $validated = $request->validate([
+            'ids' => ['required', 'array'],
+            'ids.*' => ['integer', 'exists:contacts,id'],
+        ]);
+
+        $ids = $validated['ids'];
+
+        // Buscar os contatos correspondentes
+        $contacts = Contact::whereIn('id', $ids)->get();
+
+        // Definir os cabeçalhos do CSV
+        $columns = [
+            'ID',
+            'CEP',
+            'Estado',
+            'Cidade',
+            'Bairro',
+            'Endereço',
+            'Número',
+            'Nome de Contato',
+            'Email de Contato',
+            'Telefone de Contato',
+            'Criado em',
+            'Atualizado em',
+        ];
+
+        // Criar resposta “streamed” para gerar CSV sob demanda
+        $callback = function() use ($contacts, $columns) {
+            $file = fopen('php://output', 'w');
+            // Cabeçalho
+            fputcsv($file, $columns);
+
+            // Linhas
+            foreach ($contacts as $c) {
+                fputcsv($file, [
+                    $c->id,
+                    $c->cep,
+                    $c->estado,
+                    $c->cidade,
+                    $c->bairro,
+                    $c->endereco,
+                    $c->numero,
+                    $c->nome_contato,
+                    $c->email_contato,
+                    $c->telefone_contato,
+                    $c->created_at->toDateTimeString(),
+                    $c->updated_at->toDateTimeString(),
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        // Montar a resposta com headers para download
+        $filename = 'contacts_export_' . now()->format('Ymd_His') . '.csv';
+        $headers = [
+            'Content-Type'        => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => "attachment; filename=\"$filename\"",
+        ];
+
+        return new StreamedResponse($callback, 200, $headers);
+    }
 }
