@@ -1,14 +1,26 @@
 <!-- resources/js/App.vue -->
 <template>
-  <!-- O <router-view> mostra, de acordo com a rota, o componente correspondente -->
-  <router-view />
+  <div>
+    <!-- Navegação fixa -->
+    <nav class="bg-white shadow-md p-4 flex justify-center space-x-4">
+      <!-- router-link muda a rota sem recarregar a página -->
+      <router-link to="/" class="text-blue-600 hover:underline">
+        {{ $t('form.title') }}
+      </router-link>
+      <router-link to="/contacts" class="text-blue-600 hover:underline">
+        {{ $t('list.title') }}
+      </router-link>
+    </nav>
+
+    <!-- Área onde o Vue Router irá injetar CepForm ou ContactsList -->
+    <router-view />
+  </div>
 </template>
 
 <script setup>
-// Aqui não precisamos declarar nada, pois o roteador e o i18n
-// já foram registrados em app.js.
+// Nada a declarar aqui, pois já registramos router e i18n em app.js
 </script>
 
 <style>
-/* Podemos deixar em branco ou remover, pois usamos Tailwind para estilos */
+/* Você pode deixar vazio ou adicionar estilos globais se quiser */
 </style>

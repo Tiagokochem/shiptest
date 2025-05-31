@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreContactRequest;
+use App\Models\Contact;                         // <–– importar o Model Contact
 use App\Services\ContactServiceInterface;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;                    // <–– importar Request
+use Illuminate\Support\Facades\Response;         // <–– para streamDownload
 
 class ContactController extends Controller
 {
@@ -30,7 +33,6 @@ class ContactController extends Controller
      */
     public function store(StoreContactRequest $request): JsonResponse
     {
-        // $request->validated() já retorna apenas os campos validados
         $contact = $this->service->create($request->validated());
         return response()->json($contact, 201);
     }
@@ -62,24 +64,24 @@ class ContactController extends Controller
         return response()->json(null, 204);
     }
 
-      /**
+    /**
      * POST /api/contacts/export
      * Recebe um array de IDs e retorna um CSV com esses contatos.
      */
     public function exportCsv(Request $request)
     {
-        // Validar que 'ids' seja um array de inteiros
+        // 1) Validar que 'ids' seja um array de inteiros existentes em contacts
         $validated = $request->validate([
-            'ids' => ['required', 'array'],
+            'ids'   => ['required', 'array'],
             'ids.*' => ['integer', 'exists:contacts,id'],
         ]);
 
         $ids = $validated['ids'];
 
-        // Buscar os contatos correspondentes
+        // 2) Buscar os contatos correspondentes
         $contacts = Contact::whereIn('id', $ids)->get();
 
-        // Definir os cabeçalhos do CSV
+        // 3) Definir os cabeçalhos do CSV
         $columns = [
             'ID',
             'CEP',
@@ -95,15 +97,19 @@ class ContactController extends Controller
             'Atualizado em',
         ];
 
-        // Criar resposta “streamed” para gerar CSV sob demanda
-        $callback = function() use ($contacts, $columns) {
-            $file = fopen('php://output', 'w');
-            // Cabeçalho
-            fputcsv($file, $columns);
+        // 4) Gerar o nome do arquivo
+        $filename = 'contacts_export_' . now()->format('Ymd_His') . '.csv';
 
-            // Linhas
+        // 5) Retornar um StreamedResponse via streamDownload
+        return Response::streamDownload(function () use ($contacts, $columns) {
+            $handle = fopen('php://output', 'w');
+
+            // Escreve o cabeçalho
+            fputcsv($handle, $columns);
+
+            // Escreve cada linha do CSV
             foreach ($contacts as $c) {
-                fputcsv($file, [
+                fputcsv($handle, [
                     $c->id,
                     $c->cep,
                     $c->estado,
@@ -119,16 +125,10 @@ class ContactController extends Controller
                 ]);
             }
 
-            fclose($file);
-        };
-
-        // Montar a resposta com headers para download
-        $filename = 'contacts_export_' . now()->format('Ymd_His') . '.csv';
-        $headers = [
+            fclose($handle);
+        }, $filename, [
             'Content-Type'        => 'text/csv; charset=UTF-8',
-            'Content-Disposition' => "attachment; filename=\"$filename\"",
-        ];
-
-        return new StreamedResponse($callback, 200, $headers);
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+        ]);
     }
 }

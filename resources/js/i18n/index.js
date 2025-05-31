@@ -33,6 +33,23 @@ const messages = {
       alertCepNotFound: 'CEP não encontrado',
       alertCepError: 'Não foi possível buscar o CEP no momento',
     },
+    
+    list: {
+      title: 'Listagem de Contatos',
+      headers: {
+        id: 'ID',
+        nome: 'Nome',
+        email: 'Email',
+        telefone: 'Telefone',
+        cep: 'CEP',
+        cidade: 'Cidade',
+        estado: 'Estado',
+      },
+      noRecords: 'Nenhum contato cadastrado.',
+      exportButton: 'Exportar CSV',
+      errorLoading: 'Não foi possível carregar os contatos.',
+      errorExport: 'Erro ao exportar CSV.',
+    },
   },
   en: {
     form: {
@@ -63,6 +80,22 @@ const messages = {
       alertSuccess: 'Check the browser console for form data.',
       alertCepNotFound: 'ZIP Code not found',
       alertCepError: 'Could not fetch ZIP Code at the moment',
+    },
+    list: {
+      title: 'Contacts List',
+      headers: {
+        id: 'ID',
+        nome: 'Name',
+        email: 'Email',
+        telefone: 'Phone',
+        cep: 'ZIP Code',
+        cidade: 'City',
+        estado: 'State',
+      },
+      noRecords: 'No contacts found.',
+      exportButton: 'Export CSV',
+      errorLoading: 'Unable to load contacts.',
+      errorExport: 'Error exporting CSV.',
     },
   },
 }
