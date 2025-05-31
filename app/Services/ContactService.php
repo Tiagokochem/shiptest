@@ -36,13 +36,15 @@ class ContactService implements ContactServiceInterface
         return $this->repository->find($id);
     }
 
+    
+
     /**
      * Cria um novo contato.
      *
      * @param array $data
      * @return mixed
      */
-    public function create(array $data)
+    public function create(array $data): mixed
     {
         // 1) Criar o contato via repositório
         /** @var Contact $contact */
