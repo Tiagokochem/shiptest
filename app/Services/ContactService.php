@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Repositories\ContactRepositoryInterface;
+use App\Jobs\SendContactCreatedEmail;
+use App\Models\Contact;
 
 class ContactService implements ContactServiceInterface
 {
@@ -40,9 +42,16 @@ class ContactService implements ContactServiceInterface
      * @param array $data
      * @return mixed
      */
-    public function create(array $data): mixed
+    public function create(array $data)
     {
-        return $this->repository->create($data);
+        // 1) Criar o contato via repositório
+        /** @var Contact $contact */
+        $contact = $this->repository->create($data);
+    
+        // 2) Despachar o job para a fila 'back_emails'
+        SendContactCreatedEmail::dispatch($contact)->onQueue('back_emails');
+    
+        return $contact;
     }
 
     /**
