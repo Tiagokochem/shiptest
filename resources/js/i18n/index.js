@@ -1,0 +1,81 @@
+// resources/js/i18n/index.js
+import { createI18n } from 'vue-i18n'
+
+// Mensagens em Português e Inglês
+const messages = {
+  pt: {
+    form: {
+      title: 'Cadastro de Contato',
+      labels: {
+        cep: 'CEP:',
+        estado: 'Estado:',
+        cidade: 'Cidade:',
+        bairro: 'Bairro:',
+        endereco: 'Endereço:',
+        numero: 'Número:',
+        nome_contato: 'Nome de Contato:',
+        email_contato: 'Email de Contato:',
+        telefone_contato: 'Telefone de Contato:',
+      },
+      placeholders: {
+        cep: 'Digite o CEP (somente números)',
+        estado: 'Preenchido automaticamente',
+        cidade: 'Preenchido automaticamente',
+        bairro: 'Preenchido automaticamente',
+        endereco: 'Preenchido automaticamente',
+        numero: 'Digite o número',
+        nome_contato: 'Digite o nome',
+        email_contato: 'Digite o e-mail',
+        telefone_contato: 'Digite o telefone',
+      },
+      button: 'Salvar (apenas console.log hoje)',
+      alertSuccess: 'Veja o console do navegador para os dados do formulário.',
+      alertCepNotFound: 'CEP não encontrado',
+      alertCepError: 'Não foi possível buscar o CEP no momento',
+    },
+  },
+  en: {
+    form: {
+      title: 'Contact Registration',
+      labels: {
+        cep: 'ZIP Code:',
+        estado: 'State:',
+        cidade: 'City:',
+        bairro: 'Neighborhood:',
+        endereco: 'Address:',
+        numero: 'Number:',
+        nome_contato: 'Contact Name:',
+        email_contato: 'Contact Email:',
+        telefone_contato: 'Contact Phone:',
+      },
+      placeholders: {
+        cep: 'Enter ZIP Code (numbers only)',
+        estado: 'Autofilled',
+        cidade: 'Autofilled',
+        bairro: 'Autofilled',
+        endereco: 'Autofilled',
+        numero: 'Enter number',
+        nome_contato: 'Enter name',
+        email_contato: 'Enter email',
+        telefone_contato: 'Enter phone',
+      },
+      button: 'Save (console.log only today)',
+      alertSuccess: 'Check the browser console for form data.',
+      alertCepNotFound: 'ZIP Code not found',
+      alertCepError: 'Could not fetch ZIP Code at the moment',
+    },
+  },
+}
+
+export function setupI18n() {
+  // Detectar língua padrão via browser ou fallback para 'pt'
+  const locale = navigator.language.startsWith('en') ? 'en' : 'pt'
+
+  const i18n = createI18n({
+    locale,
+    fallbackLocale: 'pt',
+    messages,
+  })
+
+  return i18n
+}
