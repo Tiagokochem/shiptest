@@ -158,3 +158,5 @@ Feito com ❤️ para avaliação .
 ![Screenshot_9](https://github.com/user-attachments/assets/b003920a-a2eb-4a1d-8d0b-399849e10627)
 ![Screenshot_10](https://github.com/user-attachments/assets/2eb95683-e254-4c1e-9e82-ccbc3473d900)
 ![Screenshot_8](https://github.com/user-attachments/assets/1b427d86-d666-4a03-9e0a-426e2d54680b)
+![tests](https://github.com/user-attachments/assets/c1490254-99db-491d-bcdb-a94884f51981)
+![dispatch](https://github.com/user-attachments/assets/f4bbe45e-8e47-4ae9-951d-86b5bbb3c7a9)
