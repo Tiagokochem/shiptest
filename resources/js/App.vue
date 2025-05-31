@@ -1,12 +1,14 @@
 <!-- resources/js/App.vue -->
 <template>
+  <!-- O <router-view> mostra, de acordo com a rota, o componente correspondente -->
   <router-view />
 </template>
 
 <script setup>
-// Nada a declarar aqui, pois o roteamento será montado no main (app.js)
+// Aqui não precisamos declarar nada, pois o roteador e o i18n
+// já foram registrados em app.js.
 </script>
 
 <style>
-/* Sem estilos específicos aqui */
+/* Podemos deixar em branco ou remover, pois usamos Tailwind para estilos */
 </style>

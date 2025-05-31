@@ -10,13 +10,13 @@ import App from './App.vue'
 
 const app = createApp(App)
 
-// Configurar Pinia
+// Registrar Pinia
 app.use(createPinia())
 
-// Configurar Vue Router
+// Registrar Vue Router
 app.use(router)
 
-// Configurar vue-i18n
+// Registrar vue-i18n
 const i18n = setupI18n()
 app.use(i18n)
 

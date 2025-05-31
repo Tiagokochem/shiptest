@@ -72,6 +72,7 @@ export function setupI18n() {
   const locale = navigator.language.startsWith('en') ? 'en' : 'pt'
 
   const i18n = createI18n({
+    legacy: false,        // <-- aqui ativamos o modo Composition API 
     locale,
     fallbackLocale: 'pt',
     messages,
