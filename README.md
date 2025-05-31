@@ -1,61 +1,155 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ShipSmart - Laravel + Vue Test Project
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este projeto é um teste técnico fullstack utilizando **Laravel 12**, **Vue 3**, **Vite**, **Laravel Sail (Docker)** e integração com **Fila + Jobs + CSV + Testes**.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## ✅ Funcionalidades Implementadas
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1. **Formulário com busca de endereço via CEP**
+2. **Persistência de dados de contatos no banco de dados**
+3. **Listagem de contatos com checkbox para seleção**
+4. **Exportação dos contatos selecionados para CSV**
+5. **Disparo de e-mail assíncrono com fila (Job) após cadastro de contato**
+6. **Testes automatizados (Feature + Unit) para cada funcionalidade**
+7. **Integração com fila 'database' via Laravel Queue**
+8. **Ambiente dockerizado com Laravel Sail**
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🚀 Tecnologias Usadas
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Laravel 12.x
+- Vue 3 (com Composition API)
+- Vite
+- Laravel Sail (Docker Compose)
+- Axios
+- Tailwind CSS
+- Fila com `database`
+- Banco de dados MySQL (via container)
+- Testes com `php artisan test`
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🔧 Como rodar o projeto
 
-## Laravel Sponsors
+### 1. Clone o repositório
+```bash
+git clone https://github.com/seu-usuario/shipsmart-test.git
+cd shipsmart-test
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 1.1 Instalar as dependências com Composer (usando Docker):
 
-### Premium Partners
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php84-composer:latest \
+    composer install --ignore-platform-reqs
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 2. Copie o `.env` de exemplo e edite se necessário
+```bash
+cp .env.example .env
+```
 
-## Contributing
+### 3. Suba os containers com Sail
+```bash
+./vendor/bin/sail up -d
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+> A primeira vez pode demorar para instalar dependências PHP e JS.
 
-## Code of Conduct
+### 4. Instale dependências JS
+```bash
+./vendor/bin/sail npm install
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 5. Rode o Vite para desenvolvimento
+```bash
+./vendor/bin/sail npm run dev
+```
 
-## Security Vulnerabilities
+### 6. Rode as migrations e configure a fila
+```bash
+./vendor/bin/sail artisan migrate
+./vendor/bin/sail artisan queue:table
+./vendor/bin/sail artisan migrate
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 7. Inicie o worker da fila
+```bash
+./vendor/bin/sail artisan queue:work
+```
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 🧪 Testes
+
+Para rodar os testes unitários e de feature:
+
+```bash
+./vendor/bin/sail artisan test
+```
+
+Testes incluídos:
+
+- Cadastro de contato
+- Edição de contato
+- Deleção de contato
+- Exportação de contatos para CSV
+- Disparo de e-mail para fila
+- Listagem de contatos
+
+---
+
+## 📁 Estrutura Principal
+
+```
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/Api/ContactController.php
+│   │   └── Requests/StoreContactRequest.php
+│   ├── Jobs/SendContactCreatedEmail.php
+│   ├── Models/Contact.php
+│   ├── Repositories/
+│   ├── Services/
+├── resources/js/
+│   ├── components/
+│   │   ├── CepForm.vue
+│   │   └── ContactsList.vue
+│   ├── router/index.js
+│   └── app.js
+├── routes/api.php
+├── tests/Feature/ContactTest.php
+├── docker-compose.yml
+```
+
+---
+
+## 📧 Disparo de Email
+
+O job `SendContactCreatedEmail` é despachado automaticamente após o cadastro de contato e vai para a fila `back_emails`. Você pode monitorar com:
+
+```bash
+./vendor/bin/sail artisan queue:work
+```
+
+---
+
+## 👨‍💻 Autor
+
+**Tiago Kochem**  
+📧 tiagok989@gmail.com  
+🔗 [LinkedIn](https://linkedin.com/in/tiago-kochem) | [GitHub](https://github.com/tiagokochem)
+
+---
+
+## 📝 Observações
+
+- O projeto utiliza apenas **MySQL**, inclusive para testes.
+- O `.env` já está configurado para funcionar com Laravel Sail.
+
+---
+
+Feito com ❤️ para avaliação .
